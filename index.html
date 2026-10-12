@@ -762,7 +762,7 @@
     <!-- 极简弹窗小卡片密码层 -->
     <div id="pwd-overlay" onclick="closePwdOverlay()">
         <div id="pwd-box" onclick="event.stopPropagation()">
-            <input type="password" id="pwd-input" placeholder="password" autocomplete="off" onkeydown="handlePwdEnter(event)">
+            <input type="password" id="pwd-input" placeholder="password" autocomplete="off" onkeydown="handlePwdEnter(event)" oninput="handlePwdInput(event)">
         </div>
     </div>
     
@@ -979,7 +979,7 @@
         });
 
         // ==========================================
-        // 1.5 极简小卡片密码锁系统
+        // 1.5 极简小卡片密码锁系统（彻底修复回调丢失 Bug）
         // ==========================================
         let pendingPwdCallback = null;
 
@@ -997,8 +997,9 @@
         }
 
         function showEmergencyUnlockModal() {
+            // 设定紧急解锁成功后的回调逻辑
             pendingPwdCallback = function() {
-                localStorage.removeItem('deep_lock_until'); 
+                localStorage.removeItem('deep_lock_until'); // 拔除硬锁
                 document.getElementById('stealth-cover').style.display = 'none';
                 sessionStorage.setItem('unlocked', 'true');
                 sessionStorage.setItem('history_pwd_unlocked', 'true');
@@ -1016,22 +1017,40 @@
             pendingPwdCallback = null;
         }
 
-        function handlePwdEnter(e) {
-            if (e.key === 'Enter') {
-                const input = document.getElementById('pwd-input');
-                const val = input.value;
-                if (val === '0831') {
-                    sessionStorage.setItem('history_pwd_unlocked', 'true');
-                    closePwdOverlay();
-                    if (pendingPwdCallback) {
-                        pendingPwdCallback();
-                        pendingPwdCallback = null;
-                    }
-                } else {
-                    input.value = '';
-                    input.classList.add('error-shake');
-                    setTimeout(() => input.classList.remove('error-shake'), 300);
+        // 核心验证逻辑
+        function verifyAndSubmitPassword() {
+            const input = document.getElementById('pwd-input');
+            const val = input.value.trim();
+            if (val === '0831') {
+                sessionStorage.setItem('history_pwd_unlocked', 'true');
+                
+                // 【关键修复点】：必须先暂存回调，再关闭弹窗！
+                const cb = pendingPwdCallback;
+                closePwdOverlay();
+                
+                if (typeof cb === 'function') {
+                    cb();
                 }
+            } else {
+                input.value = '';
+                input.classList.add('error-shake');
+                setTimeout(() => input.classList.remove('error-shake'), 300);
+            }
+        }
+
+        // 监听回车事件（兼容 PC 回车与手机虚拟键盘的 Go/完成）
+        function handlePwdEnter(e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                e.preventDefault();
+                verifyAndSubmitPassword();
+            }
+        }
+
+        // 监听输入事件：当输满 4 位且为 0831 时自动放行，手机免敲回车
+        function handlePwdInput(e) {
+            const val = e.target.value.trim();
+            if (val.length === 4 && val === '0831') {
+                verifyAndSubmitPassword();
             }
         }
 
