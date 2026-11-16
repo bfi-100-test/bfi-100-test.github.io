@@ -207,7 +207,7 @@
             background: #ffffff; 
             border: 1px solid #ddd; 
             border-radius: 8px; 
-            margin-bottom: 15px; 
+            margin-bottom: 12px; 
             box-sizing: border-box; 
             color: #444; 
             box-shadow: 0 1px 4px rgba(0,0,0,0.03); 
@@ -299,6 +299,68 @@
             content: ""; 
             display: table; 
             clear: both; 
+        }
+
+        /* ==================== 23:00 喝水提醒悬浮胶囊 ==================== */
+        #water-reminder-banner {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+            border: 1px solid #91d5ff;
+            border-radius: 10px;
+            padding: 10px 16px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+            animation: waterSlideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1), waterPulse 3s infinite ease-in-out;
+            z-index: 50;
+            flex-shrink: 0;
+        }
+
+        .water-text {
+            font-size: 13px;
+            color: #0050b3;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .water-btn {
+            background: #1890ff;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-left: 10px;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 2px 6px rgba(24, 144, 255, 0.3);
+        }
+
+        .water-btn:hover {
+            background: #096dd9;
+        }
+
+        .water-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes waterSlideDown {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes waterPulse {
+            0%, 100% { box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15); }
+            50% { box-shadow: 0 4px 18px rgba(24, 144, 255, 0.38); }
         }
         
         /* 聊天区域 */
@@ -415,7 +477,7 @@
             transition: 0.2s;
         }
         
-        .quote-block[onclick]:hover { 
+        .quote-block.clickable-quote:hover { 
             background: rgba(0,0,0,0.08); 
         }
         
@@ -426,7 +488,7 @@
             text-align: left; 
         }
         
-        .message.mine .quote-block[onclick]:hover { 
+        .message.mine .quote-block.clickable-quote:hover { 
             background: rgba(255,255,255,0.6); 
         }
         
@@ -608,7 +670,7 @@
             } 
         }
         
-        /* 隐形 404 伪装板 */
+        /* 隐形 404 伪装板（已将 cursor 改为 default 防止露馅） */
         #stealth-cover { 
             position: fixed; 
             top: 0; 
@@ -629,7 +691,7 @@
             font-size: 24px; 
             font-weight: normal; 
             margin-bottom: 10px; 
-            cursor: pointer;
+            cursor: default;
             user-select: none; 
             -webkit-user-select: none; 
         }
@@ -639,7 +701,7 @@
             color: #666; 
             user-select: none; 
             -webkit-user-select: none; 
-            cursor: pointer;
+            cursor: default;
         }
         
         #secret-trigger { 
@@ -721,18 +783,20 @@
         body.dark-theme .announcement-header.open { border-bottom-color: #333; }
         body.dark-theme #announcement-content { color: #ccc; }
         body.dark-theme #announcement-edit-area { background: #2a2a2a; border-color: #444; color: #e0e0e0; }
+        body.dark-theme #water-reminder-banner { background: linear-gradient(135deg, #112a45 0%, #15395b 100%); border-color: #1765ad; }
+        body.dark-theme .water-text { color: #69c0ff; }
         body.dark-theme #chat-box { background: #121212; }
         body.dark-theme .message.other { background: #1e1e1e; color: #e0e0e0; box-shadow: none; }
         body.dark-theme .message.mine { background: #173724; color: #e0e0e0; box-shadow: none; }
         body.dark-theme .meta { color: #888; }
         body.dark-theme .nudge-divider { background: rgba(255,255,255,0.08); color: #777; }
         body.dark-theme .quote-block { background: rgba(255,255,255,0.05); border-left-color: #555; color: #aaa; }
-        body.dark-theme .quote-block[onclick]:hover { background: rgba(255,255,255,0.1); }
+        body.dark-theme .quote-block.clickable-quote:hover { background: rgba(255,255,255,0.1); }
         body.dark-theme .message.mine .quote-block { background: rgba(0,0,0,0.2); border-right-color: #2e8b57; color: #aaa; }
-        body.dark-theme .message.mine .quote-block[onclick]:hover { background: rgba(0,0,0,0.3); }
+        body.dark-theme .message.mine .quote-block.clickable-quote:hover { background: rgba(0,0,0,0.3); }
         body.dark-theme .date-divider { color: #666; }
         body.dark-theme .search-result-card { background: #1e1e1e; border-color: #1890ff; color: #e0e0e0; }
-        body.dark-theme .search-result-card div[style*="color:#333"] { color: #ccc !important; }
+        body.dark-theme .search-result-card .search-card-body { color: #ccc !important; }
         body.dark-theme #reply-preview { background: #1f2a33; border-left-color: #40a9ff; color: #ccc; box-shadow: none; }
         body.dark-theme #input-area { background: #1e1e1e; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); }
         body.dark-theme #user-name, body.dark-theme #msg-input { background: #2a2a2a; border-color: #444; color: #e0e0e0; }
@@ -851,6 +915,15 @@
         </div>
         
         <div id="history-notice"></div>
+
+        <!-- 23:00 喝水提醒横幅 -->
+        <div id="water-reminder-banner" onclick="event.stopPropagation()">
+            <div class="water-text">
+                <span style="font-size: 18px;">💧</span>
+                <span>夜深啦（已过 11 点），喝口温水润润嗓子吧！</span>
+            </div>
+            <button class="water-btn" onclick="dismissWaterReminder()">已喝水 ✓</button>
+        </div>
         
         <!-- 聊天气泡显示区 -->
         <div id="chat-box" onscroll="closeActionMenu()">
@@ -877,9 +950,29 @@
 
     <script>
         // ==========================================
-        // 0. 瞬间读取夜间主题防闪烁
+        // 0. 瞬间读取夜间主题防闪烁 & 工具函数
         // ==========================================
         if (localStorage.getItem('dark_theme') === 'true') document.body.classList.add('dark-theme');
+
+        // 统一跨设备日期格式，避免不同系统语言导致日期格式分裂
+        function getStandardDateStrings(dateObj = new Date()) {
+            const y = dateObj.getFullYear();
+            const m = dateObj.getMonth() + 1;
+            const d = dateObj.getDate();
+            return {
+                safeDate: `${y}-${m}-${d}`,
+                originalDate: `${y}/${m}/${d}`
+            };
+        }
+
+        // HTML 安全转义（防 XSS 注入与标签错乱）
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"']/g, function(match) {
+                const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+                return map[match];
+            });
+        }
 
         // ==========================================
         // 1. 系统防御、锁屏与 8 小时硬核防盗锁
@@ -917,6 +1010,7 @@
             sessionStorage.removeItem('unlocked'); 
             sessionStorage.removeItem('history_pwd_unlocked'); 
             tapCount = 0; 
+            checkWaterReminder();
         }
         
         function resetIdleTimer() { 
@@ -949,6 +1043,7 @@
                 document.getElementById('stealth-cover').style.display = 'none'; 
                 sessionStorage.setItem('unlocked', 'true'); 
                 resetIdleTimer(); 
+                checkWaterReminder();
             } 
             
             tapTimer = setTimeout(() => { tapCount = 0; }, 500); 
@@ -1040,6 +1135,7 @@
                 sessionStorage.setItem('unlocked', 'true');
                 sessionStorage.setItem('history_pwd_unlocked', 'true');
                 resetIdleTimer();
+                checkWaterReminder();
             };
             const overlay = document.getElementById('pwd-overlay');
             const input = document.getElementById('pwd-input');
@@ -1083,6 +1179,55 @@
         }
 
         // ==========================================
+        // 1.8 每晚 11 点（23:00）喝水提醒系统
+        // ==========================================
+        function getWaterReminderCycleKey(now = new Date()) {
+            const hour = now.getHours();
+            // 23:00 至 凌晨 03:59 属于当晚喝水提醒周期
+            if (hour >= 23) {
+                return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+            } else if (hour < 4) {
+                // 跨过零点（凌晨 0~3 点）归入前一天晚上的周期，避免 23 点点掉后 0 点又弹一次
+                const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+                return `${yesterday.getFullYear()}-${yesterday.getMonth() + 1}-${yesterday.getDate()}`;
+            }
+            return null;
+        }
+
+        function checkWaterReminder() {
+            const banner = document.getElementById('water-reminder-banner');
+            if (!banner) return;
+
+            // 处于 404 伪装锁屏状态时绝不显示，确保隐蔽
+            const isUnlocked = sessionStorage.getItem('unlocked') === 'true' && !isDeepLocked();
+            if (!isUnlocked) {
+                banner.style.display = 'none';
+                return;
+            }
+
+            const cycleKey = getWaterReminderCycleKey();
+            const dismissedKey = localStorage.getItem('water_reminder_dismissed_key');
+
+            if (cycleKey && dismissedKey !== cycleKey) {
+                banner.style.display = 'flex';
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+
+        function dismissWaterReminder() {
+            const cycleKey = getWaterReminderCycleKey();
+            if (cycleKey) {
+                localStorage.setItem('water_reminder_dismissed_key', cycleKey);
+            }
+            const banner = document.getElementById('water-reminder-banner');
+            if (banner) banner.style.display = 'none';
+        }
+
+        // 每 30 秒自动巡检一次时间是否到达 23:00
+        setInterval(checkWaterReminder, 30 * 1000);
+
+        // ==========================================
         // 2. Firebase 初始化与环境设置
         // ==========================================
         const firebaseConfig = { 
@@ -1103,6 +1248,7 @@
         let currentView = "live"; 
         let currentReplyTarget = null; 
         let currentLiveDate = "";
+        let currentLiveRef = null; // 保存当前监听引用，防止重复监听泄漏
         let lastMsgTimestamp = 0; 
         let lastPatTime = 0;       
         let globalDatesList = []; 
@@ -1119,6 +1265,7 @@
             checkVipStatus(); 
             monitorPresence(); 
             monitorAnnouncement(); 
+            checkWaterReminder();
             
             if (localStorage.getItem('dark_theme') === 'true') {
                 document.getElementById('theme-toggle-btn').innerText = '☀️';
@@ -1149,12 +1296,15 @@
         function toggleAnnouncement(e) { 
             if (e.target.tagName === 'BUTTON') return; 
             const body = document.getElementById('announcement-body'); 
+            const header = document.querySelector('.announcement-header');
             const icon = document.querySelector('.announcement-header .icon'); 
             if (body.style.display === 'none' || body.style.display === '') { 
                 body.style.display = 'block'; 
+                header.classList.add('open');
                 icon.innerText = '▼'; 
             } else { 
                 body.style.display = 'none'; 
+                header.classList.remove('open');
                 icon.innerText = '▶'; 
             } 
         }
@@ -1208,8 +1358,9 @@
             const name = document.getElementById('user-name').value.trim(); 
             if (name) { 
                 const now = new Date(); 
+                const { originalDate } = getStandardDateStrings(now);
                 db.ref(ROOM_PREFIX + 'presence/' + name).set({ 
-                    timeStr: now.toLocaleDateString() + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), 
+                    timeStr: originalDate + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), 
                     timestamp: now.getTime() 
                 }); 
             } 
@@ -1452,25 +1603,34 @@
         
         function doCopy() { 
             if (!activeMessageForAction) return; 
+            const textToCopy = activeMessageForAction.text || "";
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).catch(() => fallbackCopy(textToCopy));
+            } else {
+                fallbackCopy(textToCopy);
+            }
+            closeActionMenu(); 
+        }
+
+        function fallbackCopy(text) {
             const textArea = document.createElement("textarea"); 
-            textArea.value = activeMessageForAction.text; 
+            textArea.value = text; 
             document.body.appendChild(textArea); 
             textArea.select(); 
             try { document.execCommand("Copy"); } catch (err) {} 
             textArea.remove(); 
-            closeActionMenu(); 
         }
         
         function doReply() { 
             if (!activeMessageForAction) return; 
-            const targetName = activeMessageForAction.name; 
-            const safeText = activeMessageForAction.text.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, ' '); 
+            const targetName = activeMessageForAction.name || ""; 
+            const cleanText = (activeMessageForAction.text || "").replace(/\n/g, ' '); 
             const targetMsgKey = activeMessageForAction.msgKey;
             const targetDate = activeMessageForAction.date;
             
             closeActionMenu(); 
             if (currentView !== "live") loadLiveChat(); 
-            initiateReply(targetName, safeText, targetMsgKey, targetDate); 
+            initiateReply(targetName, cleanText, targetMsgKey, targetDate); 
         }
         
         function initiateReply(name, text, msgKey, date) { 
@@ -1514,8 +1674,7 @@
 
             const myName = document.getElementById('user-name').value.trim() || '我';
             const dateObj = new Date();
-            const safeDate = dateObj.toLocaleDateString().replace(/[\/\.]/g, '-');
-            const originalDate = dateObj.toLocaleDateString();
+            const { safeDate, originalDate } = getStandardDateStrings(dateObj);
 
             const nudgePayload = {
                 type: 'nudge',
@@ -1555,8 +1714,11 @@
         // ==========================================
         // 7. 渲染全包裹气泡与 5 分钟时间跨度留白
         // ==========================================
-        function renderMessage(data, msgKey) {
+        function renderMessage(data, msgKey, forceScroll = false) {
+            if (!data) return;
             const chatBox = document.getElementById('chat-box');
+            // 判断用户当前是否处于聊天框底部附近（避免翻看上面记录时被新消息强行拉回底部）
+            const isNearBottom = (chatBox.scrollHeight - chatBox.scrollTop - chatBox.clientHeight) < 160;
             
             // 日期分割线
             if (data.date !== lastDate) { 
@@ -1575,7 +1737,7 @@
                 const isSelfPat = (data.sender === data.target);
                 nudgeDiv.innerText = isSelfPat ? `${data.sender} 拍了拍 自己` : `${data.sender} 拍了拍 ${data.target}`;
                 chatBox.appendChild(nudgeDiv);
-                chatBox.scrollTop = chatBox.scrollHeight;
+                if (forceScroll || isNearBottom) chatBox.scrollTop = chatBox.scrollHeight;
                 return;
             }
 
@@ -1597,23 +1759,29 @@
                 lastMsgTimestamp = msgTimestamp;
             }
             
-            // 引用模块
-            let quoteHtml = ''; 
+            // 引用模块（使用 DOM 节点创建，彻底杜绝引号拼接报错与 XSS）
             if (data.reply) {
-                let jumpAttr = '';
+                const quoteDiv = document.createElement('div');
+                quoteDiv.className = 'quote-block';
+                const replyAuthor = document.createElement('b');
+                replyAuthor.innerText = `${data.reply.name || ''}：`;
+                quoteDiv.appendChild(replyAuthor);
+                quoteDiv.appendChild(document.createTextNode(data.reply.text || ''));
+
                 if (data.reply.date && data.reply.msgKey) {
-                    jumpAttr = `onclick="event.stopPropagation(); jumpToContext('${data.reply.date}', '${data.reply.msgKey}')" style="cursor:pointer;" title="点击跳转到原消息"`;
+                    quoteDiv.classList.add('clickable-quote');
+                    quoteDiv.style.cursor = 'pointer';
+                    quoteDiv.title = '点击跳转到原消息';
+                    const rDate = data.reply.date.replace(/[\/\.]/g, '-');
+                    const rKey = data.reply.msgKey;
+                    quoteDiv.onclick = function(e) {
+                        e.stopPropagation();
+                        jumpToContext(rDate, rKey);
+                    };
                 }
-                quoteHtml = `<div class="quote-block" ${jumpAttr}><b>${data.reply.name}：</b>${data.reply.text}</div>`;
+                msgDiv.appendChild(quoteDiv);
             }
 
-            // 图片与文字处理
-            let processedText = data.text || ''; 
-            const imgRegex = /(https?:\/\/[^\s]+?\.(?:jpg|jpeg|png|gif|webp))/gi; 
-            if (imgRegex.test(processedText)) { 
-                processedText = processedText.replace(imgRegex, '<img src="$1" style="max-width: 100%; max-height: 300px; border-radius: 8px; margin-top: 5px; display: block;">');
-            }
-            
             // 全包模式：用户名与时间完整包在气泡内部顶部
             const metaDiv = document.createElement('div');
             metaDiv.className = 'meta';
@@ -1626,16 +1794,21 @@
             nameSpan.onclick = function(e) { handleNamePat(e, this); };
 
             const timeSpan = document.createElement('span');
-            timeSpan.innerText = ` \u00A0 ${data.time}`;
+            timeSpan.innerText = ` \u00A0 ${data.time || ''}`;
 
             metaDiv.appendChild(nameSpan);
             metaDiv.appendChild(timeSpan);
-
-            msgDiv.innerHTML = quoteHtml;
             msgDiv.appendChild(metaDiv);
             
+            // 安全转义文本并识别图片链接
+            let safeText = escapeHtml(data.text || ''); 
+            const imgRegex = /(https?:\/\/[^\s]+?\.(?:jpg|jpeg|png|gif|webp))/gi; 
+            if (imgRegex.test(safeText)) { 
+                safeText = safeText.replace(imgRegex, '<img src="$1" style="max-width: 100%; max-height: 300px; border-radius: 8px; margin-top: 5px; display: block;">');
+            }
+
             const contentSpan = document.createElement('span');
-            contentSpan.innerHTML = processedText;
+            contentSpan.innerHTML = safeText;
             msgDiv.appendChild(contentSpan);
 
             // 长按事件绑定在气泡上
@@ -1656,7 +1829,9 @@
             msgDiv.addEventListener('mouseleave', cancelPress); 
 
             chatBox.appendChild(msgDiv); 
-            chatBox.scrollTop = chatBox.scrollHeight;
+            if (forceScroll || isNearBottom || isMine) {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
 
             if (currentView === "live") {
                 const oldElements = chatBox.querySelectorAll('.message, .date-divider, .nudge-divider, .search-result-card');
@@ -1699,6 +1874,7 @@
                     currentView = "search"; 
                     lastDate = ""; 
                     lastMsgTimestamp = 0;
+                    if (currentLiveRef) { currentLiveRef.off(); currentLiveRef = null; }
                     
                     const chatBox = document.getElementById('chat-box'); 
                     Array.from(chatBox.children).forEach(child => { 
@@ -1833,7 +2009,10 @@
                 notice.innerText = `「搜索模式」: ${searchState.keyword}，已搜完全部档案，共找到 ${searchState.foundCount} 条相关记录`;
                 
                 if (searchState.foundCount === 0) {
-                    chatBox.insertAdjacentHTML('beforeend', `<div style="text-align:center; color:#888; margin-top:30px; font-size:13px;">没有找到关于 "${searchState.keyword}" 的记录哦~</div>`);
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.style.cssText = 'text-align:center; color:#888; margin-top:30px; font-size:13px;';
+                    emptyDiv.innerText = `没有找到关于 "${searchState.keyword}" 的记录哦~`;
+                    chatBox.appendChild(emptyDiv);
                 }
             }
         }
@@ -1841,8 +2020,13 @@
         function appendSearchResult(data, msgKey, chatBox) {
             const msgDiv = document.createElement('div'); 
             msgDiv.className = 'search-result-card';
-            msgDiv.innerHTML = `<div class="meta" style="margin-bottom:4px; padding:0;">📅 ${data.date} &nbsp;|&nbsp; 👤 ${data.name} &nbsp;|&nbsp; 🕒 ${data.time}</div><div style="margin: 8px 0; color:#333; font-size:14px; line-height:1.4;">${data.text}</div><div style="font-size:12px; color:#1890ff; font-weight:bold;">👉 点击前往上下文定位</div>`;
-            msgDiv.onclick = () => jumpToContext(data.date.replace(/[\/\.]/g, '-'), msgKey); 
+            const safeDateStr = escapeHtml(data.date || '');
+            const safeNameStr = escapeHtml(data.name || '');
+            const safeTimeStr = escapeHtml(data.time || '');
+            const safeBodyStr = escapeHtml(data.text || '');
+
+            msgDiv.innerHTML = `<div class="meta" style="margin-bottom:4px; padding:0;">📅 ${safeDateStr} &nbsp;|&nbsp; 👤 ${safeNameStr} &nbsp;|&nbsp; 🕒 ${safeTimeStr}</div><div class="search-card-body" style="margin: 8px 0; color:#333; font-size:14px; line-height:1.4;">${safeBodyStr}</div><div style="font-size:12px; color:#1890ff; font-weight:bold;">👉 点击前往上下文定位</div>`;
+            msgDiv.onclick = () => jumpToContext((data.date || '').replace(/[\/\.]/g, '-'), msgKey); 
             chatBox.appendChild(msgDiv); 
         }
 
@@ -1884,11 +2068,11 @@
             const liveBtn = document.getElementById('live-chat-btn'); 
             if (liveBtn) liveBtn.classList.add('active');
             
-            const todaySafe = new Date().toLocaleDateString().replace(/[\/\.]/g, '-');
+            const { safeDate: todaySafe, originalDate: todayOriginal } = getStandardDateStrings();
             
             db.ref(ROOM_PREFIX + 'active_dates').once('value', snap => {
                 let targetDate = todaySafe;
-                let originalDate = new Date().toLocaleDateString();
+                let originalDate = todayOriginal;
                 let maxTime = 0;
                 
                 if (snap.exists()) {
@@ -1906,7 +2090,7 @@
                     db.ref(ROOM_PREFIX + 'daily_messages/' + targetDate).limitToLast(50).once('value', dSnap => {
                         if (dSnap.exists()) {
                             chatBox.style.opacity = '0';
-                            dSnap.forEach(child => renderMessage(child.val(), child.key));
+                            dSnap.forEach(child => renderMessage(child.val(), child.key, true));
                             setTimeout(() => { chatBox.style.opacity = '1'; }, 50);
                             setupLiveListener(todaySafe);
                         } else {
@@ -1919,7 +2103,7 @@
                                         v.date = targetDate;
                                         updates['daily_messages/' + targetDate + '/' + child.key] = v;
                                         updates['messages/' + child.key] = null;
-                                        renderMessage(v, child.key);
+                                        renderMessage(v, child.key, true);
                                     });
                                     db.ref(ROOM_PREFIX).update(updates);
                                     setTimeout(() => { chatBox.style.opacity = '1'; }, 50);
@@ -1937,24 +2121,28 @@
         }
 
         function setupLiveListener(dateStr) {
+            if (currentLiveRef) {
+                currentLiveRef.off();
+                currentLiveRef = null;
+            }
             currentLiveDate = dateStr;
-            db.ref(ROOM_PREFIX + 'daily_messages/' + dateStr).off();
+            currentLiveRef = db.ref(ROOM_PREFIX + 'daily_messages/' + dateStr).limitToLast(50);
             
-            db.ref(ROOM_PREFIX + 'daily_messages/' + dateStr).limitToLast(50).once('value', snapshot => {
+            currentLiveRef.once('value', snapshot => {
                 const chatBox = document.getElementById('chat-box');
                 chatBox.style.opacity = '0'; 
                 let loadedKeys = {};
                 
                 if (snapshot.exists()) {
                     snapshot.forEach(child => {
-                        renderMessage(child.val(), child.key);
+                        renderMessage(child.val(), child.key, true);
                         loadedKeys[child.key] = true; 
                     });
                 }
                 setTimeout(() => { chatBox.style.opacity = '1'; }, 50); 
                 
-                db.ref(ROOM_PREFIX + 'daily_messages/' + dateStr).limitToLast(50).on('child_added', childSnap => { 
-                    if (!loadedKeys[childSnap.key]) renderMessage(childSnap.val(), childSnap.key); 
+                currentLiveRef.on('child_added', childSnap => { 
+                    if (!loadedKeys[childSnap.key]) renderMessage(childSnap.val(), childSnap.key, false); 
                 });
             });
         }
@@ -1964,6 +2152,10 @@
             lastDate = ""; 
             lastMsgTimestamp = 0;
             closeActionMenu();
+            if (currentLiveRef) {
+                currentLiveRef.off();
+                currentLiveRef = null;
+            }
             
             const chatBox = document.getElementById('chat-box'); 
             Array.from(chatBox.children).forEach(child => { 
@@ -1980,7 +2172,7 @@
             
             db.ref(ROOM_PREFIX + 'daily_messages/' + safeDate).once('value', snapshot => {
                 if (snapshot.exists()) { 
-                    snapshot.forEach(child => renderMessage(child.val(), child.key)); 
+                    snapshot.forEach(child => renderMessage(child.val(), child.key, !jumpMsgKey)); 
                     if (jumpMsgKey) {
                         setTimeout(() => { 
                             const targetMsg = document.getElementById('msg-' + jumpMsgKey); 
@@ -2002,7 +2194,7 @@
                                 v.date = safeDate; 
                                 updates['daily_messages/' + safeDate + '/' + child.key] = v;
                                 updates['messages/' + child.key] = null; 
-                                renderMessage(v, child.key);
+                                renderMessage(v, child.key, !jumpMsgKey);
                             });
                             
                             db.ref(ROOM_PREFIX).update(updates).then(() => {
@@ -2047,8 +2239,7 @@
             updatePresence(); 
             
             const now = new Date(); 
-            const safeDate = now.toLocaleDateString().replace(/[\/\.]/g, '-');
-            const originalDate = now.toLocaleDateString(); 
+            const { safeDate, originalDate } = getStandardDateStrings(now);
             
             const payload = { 
                 name: name, 
@@ -2061,7 +2252,6 @@
             if (currentReplyTarget) payload.reply = currentReplyTarget;
 
             if (currentView === "live" && currentLiveDate !== safeDate) {
-                db.ref(ROOM_PREFIX + 'daily_messages/' + currentLiveDate).off();
                 setupLiveListener(safeDate);
             }
 
