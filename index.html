@@ -396,10 +396,11 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        /* 微信风格：相隔超过5分钟的消息拉开距离 */
-        .message.msg-gap-5min {
-            margin-top: 18px;
-        }
+        /* 微信风格：相隔超过5分钟的消息或拍一拍拉开距离 */
+.message.msg-gap-5min,
+.nudge-divider.msg-gap-5min {
+    margin-top: 18px;
+}
 
         .message.other { 
             background: #ffffff; 
@@ -1730,17 +1731,35 @@
                 lastMsgTimestamp = 0; 
             }
 
-            // 处理「拍一拍」提示条
-            if (data.type === 'nudge') {
-                const nudgeDiv = document.createElement('div');
-                nudgeDiv.className = 'nudge-divider';
-                const isSelfPat = (data.sender === data.target);
-                nudgeDiv.innerText = isSelfPat ? `${data.sender} 拍了拍 自己` : `${data.sender} 拍了拍 ${data.target}`;
-                chatBox.appendChild(nudgeDiv);
-                if (forceScroll || isNearBottom) chatBox.scrollTop = chatBox.scrollHeight;
-                return;
-            }
+           // 处理「拍一拍」提示条（带时间显示 + 参与 5 分钟间隔计算）
+if (data.type === 'nudge') {
+    const nudgeDiv = document.createElement('div');
+    nudgeDiv.className = 'nudge-divider';
+    nudgeDiv.id = 'msg-' + msgKey; // 赋予消息ID，方便引用跳转定位
 
+    // 1. 像普通聊天记录一样计算 5 分钟时间间隔
+    let msgTimestamp = data.timestamp || safeParseTimestamp(data.date, data.time);
+    if (lastMsgTimestamp && msgTimestamp && (msgTimestamp - lastMsgTimestamp >= 5 * 60 * 1000)) {
+        nudgeDiv.classList.add('msg-gap-5min');
+    }
+    if (msgTimestamp) {
+        lastMsgTimestamp = msgTimestamp;
+    }
+
+    // 2. 拼接拍一拍文案与淡色时间（采用你刚才提供的优雅小尾巴样式）
+    const isSelfPat = (data.sender === data.target);
+    const patText = escapeHtml(isSelfPat ? `${data.sender} 拍了拍 自己` : `${data.sender} 拍了拍 ${data.target}`);
+    const timeHtml = data.time ? `<span style="margin-left: 6px; opacity: 0.65; font-size: 11px;">${escapeHtml(data.time)}</span>` : '';
+    
+    nudgeDiv.innerHTML = patText + timeHtml;
+    
+    // 3. 挂载到聊天框并滚动
+    chatBox.appendChild(nudgeDiv);
+    if (forceScroll || isNearBottom) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    return;
+}
             // 全包裹气泡
             const msgDiv = document.createElement('div'); 
             msgDiv.className = 'message'; 
